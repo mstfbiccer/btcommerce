@@ -1,3 +1,7 @@
+/**
+ * Header component
+ * @returns 
+ */
 const Header = () => {
 
   return(

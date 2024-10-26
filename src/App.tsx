@@ -1,18 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
-import MainLayout from './layouts/MainLayout';
-import Header from './components/Header';
-import TopBar from './components/TopBar';
+import Home from './pages/Home';
+import ProductDetail from './pages/ProductDetail';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
-  
   return (
     <div className="App">
-      <MainLayout isTitleShown={true}>
-        <Header/>
-        <TopBar/>
-      </MainLayout>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/product" element={<ProductDetail />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
