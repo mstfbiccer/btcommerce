@@ -38,7 +38,7 @@ const ProductDetail = ({basketCount, setBasketCount}:any) => {
      <div>
      <MainLayout>
       {product && (
-          <ProductCard basketCount={basketCount} setBasketCount={setBasketCount} {...product} />
+          <ProductCard {...product} />
       )}
       <CommentForm />
      </MainLayout>

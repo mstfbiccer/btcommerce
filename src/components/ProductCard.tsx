@@ -1,60 +1,80 @@
-import { Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, Button } from "@mui/material";
-import { useContext, useRef } from "react";
+import { Card, CardMedia, CardContent, Typography, CardActions, Button, Box, Rating, Grid } from "@mui/material";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import BasketContext from "../store/basketContext";
 
-interface ProductCardProps {
+interface ProductDetailProps {
   id: number;
   title: string;
   price: number;
   description: string;
   category: string;
   image: string;
-  rating?: Rating;
-  basketCount: any;
-  setBasketCount: any;
+  rating?: RatingProps;
 }
-interface Rating {
+
+interface RatingProps {
   rate: number;
   count: number;
 }
 
-// const ProductCard = ({title, price}:ProductCardProps) 
-// const ProductCard = (props:ProductCardProps)
-const ProductCard = (product:ProductCardProps) => {
-  const card = useRef<HTMLInputElement>(null);
-  const {basketCount,setBasketCount} = useContext(BasketContext);
-  console.log(card.current);
+const ProductDetail = ({ id, title, price, description, category, image, rating }: ProductDetailProps) => {
+  const { basketCount, setBasketCount } = useContext(BasketContext);
+
   return (
-    <Card sx={{ maxWidth: 345 }}>
-    <CardActionArea>
-      <input ref={card} type="hidden" value={product.id} />
-      <CardMedia
-        component="img"
-        height="140"
-        image={product.image}
-        alt={product.title}
-        style={{objectFit: 'contain'}}
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          <Link to={`/products/${product.id}`}>{product.title}</Link>
-        </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {product.description}
-        </Typography>
-      </CardContent>
-    </CardActionArea>
-    <CardActions>
-      <Button size="small" color="primary" onClick={() => {
-        setBasketCount(basketCount + 1);
-      }}>
-        Sepete Ekle
-      </Button>
-    </CardActions>
-  </Card>
+    <Card sx={{ maxWidth: 900, mx: 'auto', marginTop:"20px", p: 3, boxShadow: 4 }}>
+      <Grid container spacing={3}>
+        {/* Left Side: Product Image */}
+        <Grid item xs={12} md={6}>
+          <CardMedia
+            component="img"
+            height="400"
+            image={image}
+            alt={title}
+            sx={{ objectFit: 'contain', borderRadius: 2 }}
+          />
+        </Grid>
 
-  )
+        {/* Right Side: Product Details */}
+        <Grid item xs={12} md={6}>
+          <CardContent>
+            <Typography gutterBottom variant="h4" component="div">
+              {title}
+            </Typography>
+            <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
+              Category: {category}
+            </Typography>
+            <Box display="flex" alignItems="center" sx={{ mb: 2 }}>
+              <Rating value={rating?.rate || 0} precision={0.5} readOnly />
+              <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
+                ({rating?.count} reviews)
+              </Typography>
+            </Box>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+              {description}
+            </Typography>
+            <Typography variant="h5" color="primary" sx={{ mb: 4 }}>
+              ${price.toFixed(2)}
+            </Typography>
+            <CardActions>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setBasketCount(basketCount + 1)}
+              >
+                Add to Basket
+              </Button>
+              <Link to="/basket" style={{ textDecoration: 'none', marginLeft: '1rem' }}>
+                <Button variant="outlined" color="secondary">
+                  View Basket
+                </Button>
+              </Link>
+            </CardActions>
+          </CardContent>
+        </Grid>
+      </Grid>
+    </Card>
+  );
+};
 
-  }
-export default ProductCard;
+export default ProductDetail;
