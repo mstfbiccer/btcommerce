@@ -26,7 +26,7 @@ const Header = () => {
         <Avatar src="/assets/images/placeholder.png" alt="logo" sx={{ width: 50, height: 50 }} />
         {!isMobile && (
           <Typography variant="h6" sx={{ ml: 2, fontWeight: 'bold' }}>
-            BrandName
+            e-Commerce
           </Typography>
         )}
       </Box>
