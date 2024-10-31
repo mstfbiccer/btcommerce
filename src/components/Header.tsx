@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Avatar, DialogTitle, Drawer, Input, InputAdornment } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import BasketContext from "../store/basketContext";
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-
+  const {basketCount, setBasketCount} = useContext(BasketContext);
   return(
     <div className="header-container">
       <div className="header-logo">
@@ -32,7 +33,10 @@ const Header = () => {
           setDrawerOpen(true);
         }}>
           <ShoppingCartIcon/>
+          <span className="mini-cart-count">({basketCount})</span>
         </span>
+        <button onClick={() => setBasketCount(basketCount + 1)}>Sepete Ekle</button>
+
       </div>
       <Drawer open={drawerOpen} anchor={"right"} onClose={() => setDrawerOpen(false)}>
         <CloseIcon onClick={() => setDrawerOpen(false)}/>

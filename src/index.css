@@ -66,3 +66,9 @@ a.nav-item {
 a.nav-item:hover {
   background-color: #eaeaea;
 }
+
+.cart-button {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
