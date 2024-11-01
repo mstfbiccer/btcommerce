@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
 
+/**
+ * NavBar component
+ * @returns 
+ */
 const NavBar = () => {
   return (
     <div className="nav-container">

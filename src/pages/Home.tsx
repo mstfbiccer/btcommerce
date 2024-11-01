@@ -16,13 +16,9 @@ const Home = () => {
         setLimit(data.length);
       }
       setProducts(data);
-      console.log(data);
 
     }
   }
-  axios.get('https://fakestoreapi.com/products').then((response) => {
-    console.log(response.data);
-  });
   useEffect(() => {
     getProducts();
   }

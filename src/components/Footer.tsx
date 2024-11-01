@@ -1,3 +1,9 @@
+/**
+ * Footer component
+ * @returns 
+ * @example
+ * <Footer />
+ */
 const Footer = () => {
   return (
     <div className="footer-container">

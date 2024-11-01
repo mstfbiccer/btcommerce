@@ -1,7 +1,11 @@
 import ProductCard from "./ProductCard";
 
+/**
+ * ProductWidget Component
+ * @param products | any
+ * @returns 
+ */
 const ProductWidget = ({products}:any) => {
-  console.log(products);
   return (
     <div className="product-widget-container">
       <div className="product-category-selector">

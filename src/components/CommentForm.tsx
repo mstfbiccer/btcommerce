@@ -2,6 +2,10 @@ import { Button, TextField, Typography, Box, Card, CardContent, CardActions } fr
 import { Form, Formik, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
+/**
+ * CommentForm component
+ * @returns 
+ */
 const CommentForm = () => {
   return (
     <Card sx={{ maxWidth: 900, mx: "auto", mt: 5, p: 3, boxShadow: 3 }}>

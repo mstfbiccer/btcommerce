@@ -1,12 +1,14 @@
+import { Provider } from 'react-redux';
 import './App.css';
-import MainLayout from './layouts/MainLayout';
 import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import store from './store/store';
 
 function App() {
   return (
-    <div className="App">
+    <Provider store={store}>
+      <div className="App">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -14,6 +16,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
+    </Provider>
   );
 }
 

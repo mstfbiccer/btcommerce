@@ -1,6 +1,9 @@
-import { AspectRatio } from "@mui/icons-material";
 import { Box } from "@mui/material";
 
+/**
+ * Banner component
+ * @returns 
+ */
 const Banner = () => {
 
 return(

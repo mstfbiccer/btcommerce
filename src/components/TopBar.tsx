@@ -1,3 +1,7 @@
+/**
+ * TopBar component
+ * @returns 
+ */
 const TopBar = () => {
   return (
     <div className="top-bar-container">

@@ -1,18 +1,52 @@
-import { useContext, useState } from "react";
-import { Avatar, DialogTitle, Drawer, Input, InputAdornment, IconButton, Typography, Box, Badge, useMediaQuery } from "@mui/material";
+import {useEffect, useState } from "react";
+import { Avatar, DialogTitle, Drawer, Input, InputAdornment, IconButton, Typography, Box, Badge, useMediaQuery, Button } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MenuIcon from '@mui/icons-material/Menu';
-import BasketContext from "../store/basketContext";
-
+import { RootState } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { getProductDataByIdList } from "../store/reducers/productOperations";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import { add, clearAll, remove } from "../store/reducers/basketOperations";
+/**
+ * Header component
+ * @returns 
+ */
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [menuDrawerOpen, setMenuDrawerOpen] = useState(false);
-  const { basketCount, setBasketCount } = useContext(BasketContext);
+  // const { basketCount, setBasketCount } = useContext(BasketContext);
   const isMobile = useMediaQuery("(max-width:600px)");
+  const basketItems = useSelector((state:RootState) => state.basketOperations.products);
+  // Array.reduce fonksiyonu
+  const getTotalQuantity = basketItems.reduce((acc, item) => acc + item.quantity, 0);
 
+  const productDetails = useSelector((state:RootState) => state.productOperations.productDetails);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const productIDs = basketItems.map((item) => item.id);
+    dispatch(getProductDataByIdList(productIDs));
+    !drawerOpen && setDrawerOpen(true);
+  },[basketItems])
+
+  const mergeBasketItemsWithProductDetails = () => {
+    return basketItems.map((item) => {
+      const product = productDetails.data.find((product:any) => product.id === item.id) as any;
+      return {
+        ...item,
+        product,
+      };
+    }
+    );
+  }
+
+  const basketData = mergeBasketItemsWithProductDetails();
+
+  console.log("productDetails", productDetails);
   return (
     <Box
       className="header-container"
@@ -69,7 +103,12 @@ const Header = () => {
               onClick={() => setDrawerOpen(true)}
               sx={{ mr: 2 }}
             >
+              {/* use context kullanımı
+              
               <Badge badgeContent={basketCount} color="secondary">
+                <ShoppingCartIcon />
+              </Badge> */}
+              <Badge badgeContent={getTotalQuantity} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -87,7 +126,41 @@ const Header = () => {
         </Box>
         <Box sx={{ p: 2 }}>
           <Typography variant="body2" color="text.secondary">
-            Your cart is empty. Start adding items!
+          {basketData.length === 0 && "No items in the cart"}
+          {basketData.map((item) => (
+            <Box key={item.id} display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+              <Box display="flex" alignItems="center">
+                <Avatar src={item?.product?.image} alt={item?.product?.title} sx={{ width: 50, height: 50 }} />
+                <Box ml={2}>
+                  <Typography variant="body1">{item?.product?.title}</Typography>
+                  <Typography variant="body2" color="text.secondary">{item?.product?.price}</Typography>
+                </Box>
+              </Box>
+              {/* fancy dynamic quantity with basket add & remove */}
+              <Box display="flex" alignItems="center">
+                <IconButton onClick={() => {
+                  dispatch(remove({id: item.id, quantity: 1}));
+                }}>
+                  <RemoveCircleOutlineIcon />
+                </IconButton>
+                <Typography variant="body1">{item.quantity}</Typography>
+                <IconButton onClick={
+                  () => {
+                    dispatch(add({id: item.id, quantity: 1}));
+                  }
+                }>
+                  <AddCircleOutlineIcon />
+                </IconButton>
+              </Box>
+            </Box>
+          ))}
+           {/* clearAll button full width */}
+           {basketData.length > 0 && (
+            <Button variant="contained" style={{marginTop: "10px"}} color="error" fullWidth onClick={() => {
+              dispatch(clearAll());
+              setDrawerOpen(false);
+            }}>Clear All</Button>
+           )}
           </Typography>
         </Box>
       </Drawer>

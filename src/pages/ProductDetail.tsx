@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
 import CommentForm from "../components/CommentForm";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { getProductById, getProductDataByIdList } from "../store/reducers/productOperations";
 
 interface ProductCardProps {
   id: number;
@@ -19,14 +22,23 @@ interface Rating {
   count: number;
 }
 
-const ProductDetail = ({basketCount, setBasketCount}:any) => {
+const ProductDetail = () => {
   const {ahmet} = useParams();
   const [product, setProduct] = useState<ProductCardProps>();
-  console.log(ahmet);
-  const getSpesificProduct = async () => {
+
+  // const {basketOperations, productOperations} = useSelector((state: RootState) => state);
+  const {product: productData} = useSelector((state: RootState) => state.productOperations);
+  const {products: basketProducts} = useSelector((state: RootState) => state.basketOperations);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(getProductById(5));
+  },[]);  
+  
+
+ const getSpesificProduct = async () => {
     const {data, status} = await axios.get(`https://fakestoreapi.com/products/${ahmet}`)
     if (status === 200) {
-      console.log(data);
       setProduct(data);
     }
   }
