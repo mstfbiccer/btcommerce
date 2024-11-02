@@ -1,0 +1,63 @@
+// Common mixins for flex display
+@mixin flex-center($direction: row, $justify: center, $align: center, $wrap: nowrap) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  flex-wrap: $wrap;
+}
+
+.header-container, .top-bar-container, .banner-container, .footer-container {
+  @include flex-center(row, space-around, center, nowrap);
+  margin: 10px;
+  padding: 10px;
+}
+
+.top-bar-container {
+  @include flex-center(row, center, center, nowrap);
+  gap: 20%;
+  height: 100px;
+}
+
+.product-widget-container {
+  @include flex-center(row, flex-start, center, nowrap);
+  align-items: flex-start;
+  justify-content: flex-start;
+  border: 1px solid #ccc;
+  margin: 10px;
+}
+
+.product-list {
+  @include flex-center(column, flex-start, center, wrap);
+}
+
+.fav-button, .cart-button {
+  cursor: pointer;
+}
+
+.header-actions {
+  @include flex-center(row, flex-start, center, nowrap);
+  gap: 10px;
+}
+
+.nav-container {
+  @include flex-center(row, center, center, nowrap);
+  gap: 20px;
+
+  a.nav-item {
+    font-size: 20px;
+    color: #000;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    // &.selected -> a.nav-item.selected
+    &:hover { // -> a.nav-item:hover
+      background-color: #eaeaea;
+    }
+  }
+}
+
+.cart-button {
+  @include flex-center(row, flex-start, center, nowrap);
+}

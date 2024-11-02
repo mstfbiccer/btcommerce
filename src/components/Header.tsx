@@ -11,6 +11,10 @@ import { getProductDataByIdList } from "../store/reducers/productOperations";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { add, clearAll, remove } from "../store/reducers/basketOperations";
+import Search from "./Search";
+import { useNavigate } from "react-router-dom";
+import PersonIcon from '@mui/icons-material/Person';
+import Login from "./Login";
 /**
  * Header component
  * @returns 
@@ -30,7 +34,6 @@ const Header = () => {
   useEffect(() => {
     const productIDs = basketItems.map((item) => item.id);
     dispatch(getProductDataByIdList(productIDs));
-    !drawerOpen && setDrawerOpen(true);
   },[basketItems])
 
   const mergeBasketItemsWithProductDetails = () => {
@@ -45,8 +48,8 @@ const Header = () => {
   }
 
   const basketData = mergeBasketItemsWithProductDetails();
-
-  console.log("productDetails", productDetails);
+  const navigate = useNavigate();
+  const [loginModal, setLoginModal] = useState(false);
   return (
     <Box
       className="header-container"
@@ -56,7 +59,13 @@ const Header = () => {
       sx={{ padding: 2, boxShadow: 1 }}
     >
       {/* Logo Section */}
-      <Box display="flex" alignItems="center">
+      <Box display="flex" alignItems="center" style={{
+        cursor: "pointer"
+      }} onClick={
+        () => {
+          navigate("/");
+        }
+      }>
         <Avatar src="/assets/images/placeholder.png" alt="logo" sx={{ width: 50, height: 50 }} />
         {!isMobile && (
           <Typography variant="h6" sx={{ ml: 2, fontWeight: 'bold' }}>
@@ -66,25 +75,9 @@ const Header = () => {
       </Box>
 
       {/* Search Section - Show only on larger screens */}
-      {!isMobile && (
-        <Box flexGrow={1} mx={3}>
-          <Input
-            id="input-with-icon-adornment"
-            endAdornment={
-              <InputAdornment position="end">
-                <SearchIcon />
-              </InputAdornment>
-            }
-            placeholder="Search..."
-            fullWidth
-            sx={{
-              backgroundColor: "#f1f1f1",
-              borderRadius: 1,
-              px: 1,
-            }}
-          />
-        </Box>
-      )}
+      <Box flexGrow={1} mx={3}>
+        <Search/>
+      </Box>
 
       {/* Actions */}
       <Box display="flex" alignItems="center">
@@ -95,9 +88,19 @@ const Header = () => {
           </IconButton>
         ) : (
           <>
+            <IconButton color="primary" sx={{ mr: 2 }} onClick={
+              () => {
+                setLoginModal(true);
+              }
+            }>
+              <PersonIcon/>
+            </IconButton>
+
             <IconButton color="primary" sx={{ mr: 2 }}>
               <FavoriteIcon />
             </IconButton>
+
+
             <IconButton
               color="primary"
               onClick={() => setDrawerOpen(true)}
@@ -180,6 +183,7 @@ const Header = () => {
           <Typography variant="body1" gutterBottom>Contact</Typography>
         </Box>
       </Drawer>
+      <Login open={loginModal} />
     </Box>
   );
 };

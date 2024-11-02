@@ -9,7 +9,26 @@ const getProductDataByIdList = async (idList: number[]) => {
   const allResponses = await Promise.all(idList.map(id => getProductById(id)));
   return allResponses;
 }
+
+const getCategories = async () => {
+  const {data} = await axiosClient.get('products/categories');
+  return data;
+}
+
+const getSpecificCategory = async (catName: string) => {
+  const {data} = await axiosClient.get(`products/category/${catName}`);
+  return data;
+}
+
+const getProductsData = async () => {
+  const {data} = await axiosClient.get('products');
+  return data;
+}
+
 export default {
   getProductById,
-  getProductDataByIdList
+  getProductDataByIdList,
+  getCategories,
+  getSpecificCategory,
+  getProductsData
 };

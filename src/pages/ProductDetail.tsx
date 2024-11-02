@@ -4,9 +4,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
 import CommentForm from "../components/CommentForm";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store/store";
-import { getProductById, getProductDataByIdList } from "../store/reducers/productOperations";
 
 interface ProductCardProps {
   id: number;
@@ -25,17 +22,6 @@ interface Rating {
 const ProductDetail = () => {
   const {ahmet} = useParams();
   const [product, setProduct] = useState<ProductCardProps>();
-
-  // const {basketOperations, productOperations} = useSelector((state: RootState) => state);
-  const {product: productData} = useSelector((state: RootState) => state.productOperations);
-  const {products: basketProducts} = useSelector((state: RootState) => state.basketOperations);
-  const dispatch = useDispatch();
-  
-  useEffect(() => {
-    dispatch(getProductById(5));
-  },[]);  
-  
-
  const getSpesificProduct = async () => {
     const {data, status} = await axios.get(`https://fakestoreapi.com/products/${ahmet}`)
     if (status === 200) {
@@ -45,6 +31,17 @@ const ProductDetail = () => {
   useEffect(() => {
     getSpesificProduct();
   }, []);
+
+  useEffect(() => {
+    if (product) {
+      getSpesificProduct();
+    }
+    // ahmet -> burada product id'yi temsil ediyor
+    // path değiştiğinde product id de değiştiği için
+    // useEffect içerisinde product id'ye göre product bilgilerini
+    // getiriyoruz
+
+  }, [ahmet]);
 
   return (
      <div>
