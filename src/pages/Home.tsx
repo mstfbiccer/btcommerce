@@ -30,16 +30,13 @@ const Home = () => {
   }, [categories]);
   return (
     <MainLayout>
-      <TopBar/>
       <Banner/> 
+      <TopBar/>
       {/* {useMemo(() =>  <ProductWidget products={products} limit={limit} isSlider={isSlider} />, [])} */}
       {/* {products && products.length > 0 &&  (
         <ProductWidget products={products} limit={limit} isSlider={isSlider} />
       )} */}
       <CategoryWidget categories={categories} activeProducts={activeProducts} loading={activeProducts.loading} />
-      <Banner/>
-      <Banner/>
-      <Banner/>
     </MainLayout>
   )
 }

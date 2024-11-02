@@ -183,7 +183,9 @@ const Header = () => {
           <Typography variant="body1" gutterBottom>Contact</Typography>
         </Box>
       </Drawer>
-      <Login open={loginModal} />
+      <Login open={loginModal} onClose={() => {
+        setLoginModal(false);
+      }} />
     </Box>
   );
 };

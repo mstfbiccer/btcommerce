@@ -12,7 +12,7 @@ const MainLayout = ({children}:any) => {
     <BasketContext.Provider value={{basketCount, setBasketCount, totalPrice}}>
        <div className="main-container">
         <Header/>
-        <NavBar/>
+        {/* <NavBar/> */}
           {children}
         <Footer/>
     </div>
